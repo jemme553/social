@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 5rem;
+} */
+
+.react-datepicker__week {
+  display: flex;
+  justify-content: space-between;
+}
+
+.react-datepicker__day-names {
+  display: flex;
+  justify-content: space-between;
+}
+
+.react-datepicker {
+  width: 100%;
+  display: grid !important;
+}
+
+.gradientText {
+  background: -webkit-linear-gradient(#000, #a855f7 );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+

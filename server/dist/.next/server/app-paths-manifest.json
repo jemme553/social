@@ -1,0 +1,20 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/getCategory/route": "app/api/getCategory/route.js",
+  "/api/getFull/route": "app/api/getFull/route.js",
+  "/about/page": "app/about/page.js",
+  "/api/getRecently/route": "app/api/getRecently/route.js",
+  "/api/getShorts/route": "app/api/getShorts/route.js",
+  "/api/getStar/route": "app/api/getStar/route.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/home/page": "app/home/page.js",
+  "/modal/page": "app/modal/page.js",
+  "/page": "app/page.js",
+  "/profile/page": "app/profile/page.js",
+  "/reels/page": "app/reels/page.js",
+  "/sign-in/page": "app/sign-in/page.js",
+  "/video/[title]/page": "app/video/[title]/page.js",
+  "/sign-up/page": "app/sign-up/page.js",
+  "/videos/page": "app/videos/page.js",
+  "/photos/page": "app/photos/page.js"
+}

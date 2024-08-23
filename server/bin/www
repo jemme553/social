@@ -1,0 +1,157 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var app = require('../app');
+var debug = require('debug')('media:server');
+var http = require('http');
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || '3001');
+app.set('port', port);
+
+/**
+ * Create HTTP server.
+ */
+
+var server = http.createServer(app);
+
+const io = require("socket.io")(server, {
+  cors: {
+      origin: ['http://localhost:3000'],
+      // origin: 'localhost:3000',
+      methods: ["GET", "POST"]
+  }
+});
+
+io.on("connection", (socket) => {
+  console.log('this user Connected', socket.id);
+
+  socket.on('userConnected', (user) => {
+    console.log(user)
+  //     console.log('userConnected: ',user)
+  //     let connecteduser = { user: user, id: socket.id };
+  //     users.push(connecteduser);
+  //     console.log('users: ',users);
+  //     // socket.emit('onlineusers', users);
+  //     socket.broadcast.emit('onlineusers', users);
+  });
+
+  // socket.on("sendPrivateMessage", (message) => {
+  //     // console.log('Message: ',message.to.id);
+  //     let mm = {
+  //         message:message.message,
+  //         from: message.from,
+  //     }
+  //     let pm = {
+  //         from:message.from,
+  //         to:message.to.user,
+  //         message:message.message,
+  //         time:message.time
+  //     }
+  //     messagesController.newPrivateMessage(pm);
+  //     // let message2Send = JSON.stringify({ user: socket.id, message: mess })
+  //     socket.to(message.to.id).emit("getPrivateMessage", mm);
+  //     // socket.emit("getPrivateMessage", mm);
+  // });
+
+  // socket.on("message", (message) => {
+  //     console.log('message from: ', socket.id, message);
+  //     messagesController.newMessage(message);
+  //     let message2Send = JSON.stringify({ user: socket.id, message: message })
+  //     // socket.emit("getMessage", message2Send);
+  //     socket.broadcast.emit("getMessage", message2Send);
+  // });
+
+  socket.on('disconnecteduser', () => {
+      // console.log('users1: ', users);
+      users.splice(users.findIndex(elem => elem.id === socket.id), 1);
+      socket.broadcast.emit('onlineusers', users);
+      console.log('userDisconnect: ', socket.id);
+  })
+  socket.on("disconnect", () => {
+      console.log('this user Disconnected', socket.id);
+      // let boo = users.some(function(user) {
+      //     return user.id === socket.id;
+      // });
+      // console.log('boo: ',boo);
+      // if(boo === true) {
+      //     console.log(true);
+      // } else {
+      //     console.log(false);
+      // }
+  });
+});
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}
